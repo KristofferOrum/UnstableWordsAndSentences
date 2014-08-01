@@ -1,11 +1,14 @@
 // the semi-colon before the function invocation is a safety 
 // net against concatenated scripts and/or other plugins 
 // that are not closed properly.
+//http://www.enchantedlearning.com/wordlist/ GET ALL THESE IN HERE
 ;
 (function($, window, document) {
 
     'use strict';
-
+    if (!$.unstableVars) {
+        $.unstableVars = {};
+    };
     var pluginName = 'unstable',
         // the name used in .data()
         dataPlugin = 'plugin_' + pluginName,
@@ -74,6 +77,8 @@
      *  @returns {Number}
      */
     var _getSquare = function(nr) {
+        console.log($.unstableVars.worldlists);
+        console.log($.unstableVars.codes);
         return nr * nr;
     };
 
@@ -94,19 +99,52 @@
         init: function() {
             var _this = this;
 
-            // add the other input, to display the calculated square
-            _this.elementSquare = $('<input readonly name="' + pluginName + '">').insertAfter(_this.element);
+            //load data from json
 
-            // bind events
-            _this.element.on('keyup', function() {
-                _this.elementSquare.val(_getSquare($(this).val()));
+            $.getJSON("js/wordlist.json", function(data) {
+                $.unstableVars.worldlists = [];
+                $.unstableVars.codes = [];
+                $.unstableVars.names = [];
+
+                $.each(data, function(key, val) {
+                    $.unstableVars.worldlists.push(val.words);
+                    $.unstableVars.codes.push(val.code);
+                    $.unstableVars.names.push(val.name);
+
+                    //codes.push(val.code);
+                    //console.log($.unstableVars.names[$.unstableVars.names.length - 1])
+
+                });
+
+
+                //find and replace variables
+                var unstableContent = _this.element.html();
+                for (var i = 0; i < $.unstableVars.codes.length; i++) {
+                    var pattern = new RegExp("(" + $.unstableVars.codes[i] + ")", "ig");
+                    console.log(pattern);
+                    var unstableContent = unstableContent.replace(pattern, '<span class="' + $.unstableVars.names[i] + '">' + $.unstableVars.worldlists[i][
+                        [Math.floor(Math.random() * $.unstableVars.worldlists[i].length)]
+                    ] + '</span>');
+                    // $unstableVars.codes[i];
+                };;
+
+                _this.element.html(unstableContent);
+
+
+                // bind events
+                // _this.element.on('keyup', function() {
+                //     _this.elementSquare.val(_getSquare($(this).val()));
+                // });
+
+                // set initial value, and trigger the 'keyup', to update the square
+                _this.element.val(_this.options.nr).trigger('keyup');
+
+                // trigger onLoad callback
+                _this.options.onLoad();
+
             });
 
-            // set initial value, and trigger the 'keyup', to update the square
-            _this.element.val(_this.options.nr).trigger('keyup');
 
-            // trigger onLoad callback
-            _this.options.onLoad();
         },
 
         /**
@@ -135,6 +173,7 @@
             if (_nr < 0) {
                 _nr = 0;
             }
+            //console.log(worldlists[worldlists.length - 1]);
 
             this.element.val(_nr);
         }

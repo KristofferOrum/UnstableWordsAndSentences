@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>jQuery Plugin Skeleton example</title>
+        <title>Unstable text the jQuery Plugin </title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -18,33 +18,18 @@
                 font-family: serif;
                 position: relative;
             }
-            input {
-                padding: 0.5em;
-                font-size: 72px;
-                font-family: serif;
-                text-align: center;
-                width: 25%;
-                margin: 0 0.25em;
-                margin-top: -2em;
-                display: inline-block;
-            }
-            .wrapper {
-                position: absolute;
-                top: 50%;
-                left: 0;
-                width: 100%;
-            }
+
         </style>
     </head>
 
     <body>
 
-        <div class="wrapper">
-            <input id="element" maxlength="3">
-        </div>
 
-        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-        <script src="../src/jquery.square.js"></script>
+            <span id="element" >test ##ADVERB</span>
+
+
+        <script src="js/jquery-2.1.1.min.js"></script>
+        <script src="js/jquery.unstable.js"></script>
 
         <script>
             // on DOM ready
@@ -52,7 +37,7 @@
                 var instance = $('#element').unstable({
                     onLoad: function() {
                         console.info('plugin is loaded')
-                        console.info('Fill in a value in the left input field, and it\'s square will be calculated and displayed in the right input field');
+
                     }
                 });
             });
