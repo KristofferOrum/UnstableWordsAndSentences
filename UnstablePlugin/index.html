@@ -21,20 +21,22 @@
 
         </style>
     </head>
-
     <body>
-
-
-            <span id="element" >test ##ADVERB</span>
-
-
+            <span class="element" >after the apocalypse all art will be #ADJECTIVE#</span>
+            </br>
+            <span class="element" >after the apocalypse all art will be #ADVERB# #COLOUR#</span>
+            </br>
+            <span class="element" >after the apocalypse all #ARTS# will be #DOGMA#</span>            
+            </br>
+            <span class="element" >after the apocalypse all #ARTS# will be #ARCHITECTURE#</span>
         <script src="js/jquery-2.1.1.min.js"></script>
-        <script src="js/jquery.unstable.js"></script>
+         <script src="js/jquery.randomSentences.js"></script>
+        <script src="js/jquery.unstableWords.js"></script>
 
         <script>
             // on DOM ready
             $(function() {
-                var instance = $('#element').unstable({
+                var instance = $('.element').unstableWords({wordlist:'js/wordlist.json',
                     onLoad: function() {
                         console.info('plugin is loaded')
 

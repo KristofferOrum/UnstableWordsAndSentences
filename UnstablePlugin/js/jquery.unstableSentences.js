@@ -2,6 +2,8 @@
 // net against concatenated scripts and/or other plugins 
 // that are not closed properly.
 //http://www.enchantedlearning.com/wordlist/ GET ALL THESE IN HERE
+//remeber: http://julian.com/research/blast/
+
 ;
 (function($, window, document) {
 
@@ -9,7 +11,7 @@
     if (!$.unstableVars) {
         $.unstableVars = {};
     };
-    var pluginName = 'unstable',
+    var pluginName = 'randomSentences',
         // the name used in .data()
         dataPlugin = 'plugin_' + pluginName,
 
@@ -99,12 +101,17 @@
         init: function() {
             var _this = this;
 
-            //load data from json
+            //load data from json THIS SHOULD HAPPEN ONLY ONCE!
 
-            $.getJSON("js/wordlist.json", function(data) {
+            //if (!$.unstableVars.status) {
+
+            console.log("wordlist: " + _this.options.wordlist);
+            $.getJSON(_this.options.wordlist, function(data) {
                 $.unstableVars.worldlists = [];
                 $.unstableVars.codes = [];
                 $.unstableVars.names = [];
+                $.unstableVars.status = "loaded";
+
 
                 $.each(data, function(key, val) {
                     $.unstableVars.worldlists.push(val.words);
@@ -116,12 +123,13 @@
 
                 });
 
+                //}
 
-                //find and replace variables
+                //find and replace variables, wrap in span tags for furter random
                 var unstableContent = _this.element.html();
                 for (var i = 0; i < $.unstableVars.codes.length; i++) {
                     var pattern = new RegExp("(" + $.unstableVars.codes[i] + ")", "ig");
-                    console.log(pattern);
+                    //console.log(pattern);
                     var unstableContent = unstableContent.replace(pattern, '<span class="' + $.unstableVars.names[i] + '">' + $.unstableVars.worldlists[i][
                         [Math.floor(Math.random() * $.unstableVars.worldlists[i].length)]
                     ] + '</span>');
